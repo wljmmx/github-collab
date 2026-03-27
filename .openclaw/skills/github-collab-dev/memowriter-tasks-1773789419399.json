@@ -1,0 +1,13 @@
+{
+  "agent": "memowriter",
+  "tasks": [
+    {
+      "type": "doc",
+      "title": "文档 A",
+      "description": "编写文档 A",
+      "priority": "low"
+    }
+  ],
+  "repo": "test-repo",
+  "timestamp": "2026-03-17T23:16:59.399Z"
+}

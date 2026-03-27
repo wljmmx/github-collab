@@ -1,0 +1,13 @@
+{
+  "agent": "coder",
+  "tasks": [
+    {
+      "type": "code",
+      "title": "功能 A",
+      "description": "实现功能 A",
+      "priority": "high"
+    }
+  ],
+  "repo": "test-repo",
+  "timestamp": "2026-03-17T23:16:59.398Z"
+}

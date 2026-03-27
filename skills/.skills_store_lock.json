@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "skill-vetter": {
+      "name": "Skill Vetter",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=skill-vetter",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "clawsec": {
+      "name": "ClawSec",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=clawsec",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "tavily-search": {
+      "name": "Tavily Web Search",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=tavily-search",
+      "source": "skillhub",
+      "version": "1.0.0"
+    }
+  }
+}

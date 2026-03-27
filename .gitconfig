@@ -1,0 +1,17 @@
+# GitHub Collaborative Development System Configuration
+# 根目录：gitwork/
+# 所有 Git 操作基于此目录
+
+[core]
+    worktree = .
+    autocrlf = input
+    
+[github]
+    base_dir = gitwork
+    default_branch = master
+    
+[paths]
+    core = core/
+    db = db/
+    scripts = scripts/
+    tests = tests/

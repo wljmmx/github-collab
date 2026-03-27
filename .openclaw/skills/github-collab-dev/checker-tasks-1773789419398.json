@@ -1,0 +1,13 @@
+{
+  "agent": "checker",
+  "tasks": [
+    {
+      "type": "test",
+      "title": "测试 A",
+      "description": "测试功能 A",
+      "priority": "medium"
+    }
+  ],
+  "repo": "test-repo",
+  "timestamp": "2026-03-17T23:16:59.398Z"
+}

@@ -1,0 +1,14 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# 运行 Prettier 格式化
+npx prettier --write .
+
+# 运行 ESLint 检查
+npx eslint . --fix
+
+# 运行测试
+npm test
+
+# 提交格式化的文件
+git add --all
