@@ -1,46 +1,57 @@
 /**
  * GitHub Collaboration Skill - Main Entry
  * GitHub 项目协作开发技能
+ * 
+ * @module github-collab
  */
 
-const path = require('path');
+// 核心模块
+const TaskManager = require('./core/task-manager').TaskManager;
+const AgentManager = require('./core/agent-manager').AgentManager;
+const ProjectManager = require('./core/project-manager').ProjectManager;
+const ConfigManager = require('./core/config-manager').ConfigManager;
+
+// 数据库层
+const Database = require('./db/database');
+
+// 工具函数
+const Logger = require('./utils/logger');
+const Cache = require('./utils/cache');
+const Helpers = require('./utils/helpers');
 
 // 导出所有模块
 module.exports = {
-    // 任务管理
-    TaskManager: require('./task-manager').TaskManager,
-    TaskManagerEnhanced: require('./task-manager-enhanced').TaskManagerEnhanced,
+    // 核心模块
+    TaskManager,
+    AgentManager,
+    ProjectManager,
+    ConfigManager,
     
-    // Agent
-    DevAgent: require('./dev-agent').DevAgent,
-    TestAgent: require('./test-agent').TestAgent,
-    MainAgent: require('./main-agent').MainAgent,
+    // 数据库
+    Database,
     
-    // STP 集成
-    STPIntegrator: require('./stp-integrator').STPIntegrator,
-    STPIntegratorEnhanced: require('./stp-integrator-enhanced').STPIntegratorEnhanced,
-    
-    // 消息通知
-    sendProgressUpdate: require('./openclaw-message').sendProgressUpdate,
-    sendTaskCompletion: require('./openclaw-message').sendTaskCompletion,
-    sendErrorNotification: require('./openclaw-message').sendErrorNotification,
-    sendTaskAssignment: require('./openclaw-message').sendTaskAssignment,
-    
-    // QQ 通知
-    QQNotifier: require('./qq-notifier').QQNotifier,
-    
-    // 配置
-    Config: require('./config').Config
+    // 工具
+    Logger,
+    Cache,
+    Helpers
 };
 
 /**
  * 快速开始示例
  */
 async function quickStart() {
-    const { TaskManagerEnhanced, DevAgent, TestAgent } = module.exports;
+    const { TaskManager, AgentManager, ProjectManager } = module.exports;
+    
+    // 初始化配置
+    const config = new ConfigManager();
+    await config.initialize();
+    
+    // 初始化数据库
+    const db = new Database();
+    await db.connect();
     
     // 创建任务管理器
-    const taskManager = new TaskManagerEnhanced();
+    const taskManager = new TaskManager(db);
     
     // 创建项目
     const project = await taskManager.createProject({
@@ -61,15 +72,12 @@ async function quickStart() {
     
     console.log(`Created task: ${task.id}`);
     
-    // 启动 Dev Agent
-    const devAgent = new DevAgent('dev-agent');
-    await devAgent.initialize();
-    await devAgent.processQueue();
+    // 初始化 Agent
+    const agentManager = new AgentManager(db);
+    await agentManager.initialize();
     
-    // 启动 Test Agent
-    const testAgent = new TestAgent('test-agent');
-    await testAgent.initialize();
-    await testAgent.processQueue();
+    // 关闭数据库连接
+    await db.close();
 }
 
 // 如果直接运行此文件
