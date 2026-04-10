@@ -69,12 +69,39 @@
 - **配置 CLI**: 配置管理命令行工具
 - **通用命令**: 支持通用命令系统
 
+### 8. OpenClaw 原生集成 (OpenClaw Native Integration)
+- **sessions_spawn**: 使用 OpenClaw 原生接口创建子 Agent
+- **subagents**: 管理子 Agent 生命周期（list/kill/steer）
+- **sessions_send**: 向 Agent 会话发送消息
+- **sessions_history**: 获取会话历史
+- **message**: 发送通知到多渠道（QQ、Telegram 等）
+- **自动调度**: 基于任务优先级和 Agent 状态自动分配
+- **状态同步**: 任务状态实时同步到数据库
+
 ## 📁 项目结构
 
 ### 核心模块 (src/core/)
-- `main-controller.js` - 主控制器
+- `main-controller.js` - 主控制器（传统版本）
 - `agent-binding.js` - Agent 绑定
 - `openclaw-message.js` - 消息处理
+
+### OpenClaw 原生模块 (src/core/)
+- `openclaw-tools.js` - OpenClaw 原生工具封装
+  - `spawnSubAgent()`: 使用 sessions_spawn 创建子 Agent
+  - `manageSubAgents()`: 使用 subagents 管理生命周期
+  - `sendToSession()`: 使用 sessions_send 发送消息
+  - `getSessionHistory()`: 获取会话历史
+  - `sendMessage()`: 使用 message 工具发送通知
+- `openclaw-agent-orchestrator.js` - Agent 调度器
+  - 支持 coder/tester/reviewer/architect 等 Agent 类型
+  - 自动构建专业提示
+  - 任务分配和状态追踪
+  - 自动清理离线 Agent
+- `enhanced-main-controller.js` - 增强主控制器
+  - 整合数据库任务管理 + OpenClaw Agent 调度
+  - 自动任务队列处理
+  - 任务状态同步
+  - 自动恢复机制
 
 ### 数据库模块 (src/db/)
 - `init.js` - 数据库初始化
