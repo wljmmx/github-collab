@@ -2,7 +2,7 @@
  * Cache 单元测试
  */
 
-const { Cache } = require('../cache');
+const { Cache } = require('../utils/cache');
 
 describe('Cache - 缓存系统', () => {
   describe('基本功能', () => {
@@ -79,7 +79,7 @@ describe('Cache - 缓存系统', () => {
       cache.set('key', 'value');
 
       // 等待过期
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           const result = cache.get('key');
           expect(result).toBeUndefined();
@@ -92,7 +92,7 @@ describe('Cache - 缓存系统', () => {
       const cache = new Cache();
       cache.set('key', 'value', 1); // 1 秒
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           const result = cache.get('key');
           expect(result).toBeUndefined();
@@ -105,7 +105,7 @@ describe('Cache - 缓存系统', () => {
       const cache = new Cache();
       cache.set('key', 'value', 0);
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           const result = cache.get('key');
           expect(result).toBe('value');
@@ -118,7 +118,7 @@ describe('Cache - 缓存系统', () => {
       const cache = new Cache({ defaultTTL: 500 }); // 500ms
       cache.set('key', 'value');
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           cache.refresh('key', 1000); // 刷新为 1000ms
 
@@ -134,11 +134,11 @@ describe('Cache - 缓存系统', () => {
     test('应该刷新为默认 TTL', () => {
       const cache = new Cache({ defaultTTL: 1000 }); // 1000ms
       cache.set('key', 'value', 0); // 永不过期
-      
-      return new Promise(resolve => {
+
+      return new Promise((resolve) => {
         setTimeout(() => {
           cache.refresh('key'); // 刷新为默认 TTL (1000ms)
-       
+
           setTimeout(() => {
             const result = cache.get('key');
             expect(result).toBeUndefined(); // 应该过期
@@ -270,7 +270,7 @@ describe('Cache - 缓存系统', () => {
       cache.set('key2', 'value2', 1);
       cache.set('key3', 'value3', 0); // 永不过期
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           const result = cache.clearExpired();
           expect(result).toBe(2);
@@ -325,7 +325,7 @@ describe('Cache - 缓存系统', () => {
       cache.set('key2', 'value2', 1);
       cache.set('key3', 'value3', 0);
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           const keys = cache.getValidKeys();
           expect(keys).toContain('key3');
@@ -366,7 +366,7 @@ describe('Cache - 缓存系统', () => {
 
       cache.set('key1', 'value1', 1);
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           cache.get('key1'); // 触发过期检查
           expect(evicted.length).toBe(1);
@@ -437,12 +437,18 @@ describe('Cache - 缓存系统', () => {
         cache.set(`key${i}`, `value${i}`, 1);
       }
 
-      const start = Date.now();
-      cache.clearExpired();
-      const end = Date.now();
+      // 等待过期
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const start = Date.now();
+          cache.clearExpired();
+          const end = Date.now();
 
-      expect(end - start).toBeLessThan(100);
-      expect(cache.size()).toBe(0);
+          expect(end - start).toBeLessThan(100);
+          expect(cache.size()).toBe(0);
+          resolve();
+        }, 100);
+      });
     });
   });
 });
